@@ -34,6 +34,7 @@
 [submodule "Mezzano"]
 	path = Mezzano
 	url = https://github.com/fittestbits/Mezzano
+	branch = fittestbits/mcclim
 [submodule "home/cl-wav"]
 	path = home/cl-wav
 	url = https://github.com/RobBlackwell/cl-wav.git
