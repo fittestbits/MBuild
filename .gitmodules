@@ -123,4 +123,4 @@
 [submodule "home/mcclim"]
 	path = home/mcclim
 	url = https://github.com/fittestbits/McCLIM.git
-	branch = fittestbits/mezzano
+	branch = fittestbits/compositor
