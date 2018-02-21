@@ -30,7 +30,7 @@ cold-image: build-cold-image.lisp
 	echo "(defparameter *file-server-host-ip* \"$(FILE_SERVER_IP)\")" >> Mezzano/config.lisp
 	echo "(defparameter *home-directory-path* \"$(CURDIR)/home/\")" >> Mezzano/config.lisp
 	echo "(defparameter *mezzano-source-path* \"$(CURDIR)/Mezzano/\")" >> Mezzano/config.lisp
-	cd Mezzano/ && $(SBCL) --load ../build-cold-image.lisp
+	cd Mezzano/ && $(SBCL) --dynamic-space-size 2048 --load ../build-cold-image.lisp
 
 cold-image-vmdk: cold-image
 	$(eval VM_NAME = $(shell VBoxManage showmediuminfo mezzano.vmdk |awk '/^In use by VMs:/{print $$5}'))
@@ -43,6 +43,8 @@ cold-image-vmdk: cold-image
 	-VBoxManage closemedium disk mezzano.vmdk
 	rm -f mezzano.vmdk
 	VBoxManage convertfromraw --format vmdk mezzano.image mezzano.vmdk
+# This fails when the image isn't attached to any VM and there's nothing to update.
+	@echo "*** Failures from VBoxManage are harmless and can be ignored. ***"
 	VBoxManage storagectl "$(VM_NAME)" --name IDE --add ide --controller PIIX4
 	VBoxManage storageattach "$(VM_NAME)" --storagectl IDE --port 0 --device 0 --type hdd --medium mezzano.vmdk
 
